@@ -1,26 +1,28 @@
 package com.ruben.proteinapi.Security;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-
-import javax.persistence.Version;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
+    private final JWTAuthorizationFilter jwtAuthorizationFilter;
+
+    public WebSecurityConfig(UserDetailsService userDetailsService, JWTAuthorizationFilter jwtAuthorizationFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+    }
+
     /*
     @Bean
     SecurityFilterChain filterChain(@NotNull HttpSecurity http, AuthenticationManager authManager) throws Exception {
@@ -38,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
     }
     */
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -52,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    /*
     @Override
     @Bean
     public UserDetailsService userDetailsService(){
@@ -62,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .build());
         return manager;
     }
+    */
 
     /*
     @Bean
